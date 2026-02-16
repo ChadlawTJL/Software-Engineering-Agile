@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <link rel="stylesheet" href="static/Styles.css">
+</head>
+<body>
+
+<h1>Dashboard</h1>
+<h2>Please Select an option below.</h2>
+
+<!---Buttons to act as links to each page - the button style is unique and is in styles.css-->
+<div>
+    <a href="{{ url_for('assets') }}" class="dashbtn">Assets</a>
+    <a href="{{ url_for('users') }}" class="dashbtn">Users</a>
+    <a href="{{ url_for('asset_assignment') }}" class="dashbtn">Asset Assignment</a>
+</div>
+     
+     
+
+
+
+</body>
+</html>
