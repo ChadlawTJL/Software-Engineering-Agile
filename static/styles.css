@@ -5,7 +5,7 @@ body {background-image:
         linear-gradient(
             rgba(0, 0, 0, 0.35),
             rgba(0, 0, 0, 0.35)
-        ), url("images/CL_Background.jpg");
+        ), url("images/cl_background.jpg");
   background-size: cover;
   background-position: centre;
   background-repeat: no-repeat;
