@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles.css') }}">
+    <title>Assets Assignment</title>
+</head>
+<body>
+    <h1>Assets Assignment</h1>
+
+    <!--Creating the assign -->
+    
+    <div>
+        <h3>Assign New Asset</h3>
+        <form action="{{ url_for('assign_asset') }}" method="POST">
+            <label>Select User:</label>
+            <select name="user_id" required>
+                {% for user in users %}
+                <!--Though the userID sected, on page it shows the users name-->
+                    <option value="{{ user[0] }}">{{ user[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Select Available Asset:</label>
+            <select name="asset_id" required>
+                {% for asset in assets %}
+                <!--Though the AssetID sected, on page it shows the Asset name-->
+                    <option value="{{ asset[0] }}">{{ asset[1] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Assign Asset</button>
+        </form>
+    </div>
+    
+
+    <!--Table for all to view-->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Asset Description</th>
+                <th>Assigned To</th>
+                <th>Serial Number</th>
+                <th>Date Assigned</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+          <!-- had to rename this to row as asset is already used-->
+            {% for row in asset_assignment_list %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3><a href="{{ url_for('Dashboard') }}" class="dashbtn">Back to Dashboard</a></h3>
+</body>
+</html>
