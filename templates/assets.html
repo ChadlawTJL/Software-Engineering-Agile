@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles.css') }}">
+    <title>Assets</title>
+</head>
+<body>
+
+    <h1>Assets</h1>
+    <!-- Asset table pulled from app.py -->
+    <table>
+        <thead>
+            <tr>
+               <th>AssetID</th>
+                <th>Asset_Description</th>
+                <th>Asset Type</th>
+                <th>Serial Number </th>
+                <th>Purchase Date </th>
+                <th>Asset Status </th>
+                {% if session.get('Sys_Role') == 'Admin' %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+          <!-- create a loop for each row -->
+            {% for asset in asset_list %}
+            <tr>
+                <td>{{ asset[0] }}</td> 
+                <td>{{ asset[1] }}</td> 
+                <td>{{ asset[2] }}</td> 
+                <td>{{ asset[3] }}</td> 
+                <td>{{ asset[4] }}</td>
+                <td>{{ asset[5] }}</td> 
+                <!-- Edit Asset button  -->
+                
+                <td>
+                    <form action="{{ url_for('edit_asset', asset_id=asset[0]) }}" method="get">
+                        <button type="submit" class="edit-btn">Edit Asset</button>
+                        </form>
+<!--The delete button-->
+                {% if session.get('Sys_Role') == 'Admin' %}
+                    <form action="{{ url_for('delete_asset', asset_id=asset[0]) }}" method="post">
+                        <button class="Delete-btn">Delete Asset</button>
+                    </form>
+                   
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- create asset & editing section - only available for admins-->
+    
+    <div class="form-container">
+        <h3>{{ 'Edit Asset' if edit_asset else 'Create New asset' }}</h3>
+
+        <form method="post" action="{{ url_for('save_asset') }}">
+            <!--If edit we want the ID to be hidden but to pass through the row ID... for  create user, an ID is needed so the field shows-->
+          {% if edit_asset %}
+          <input type="hidden" name="asset_id" placeholder="Asset ID (do not leave blank)" value="{{ edit_asset[0] }}">
+          {% else %}
+          <input type="text" name="asset_id" placeholder="Asset ID (do not leave blank)" value="{{ edit_asset[0] }}"required>
+          {% endif %}
+
+            <div class="input-group">
+                <input type="text" name="Asset_Description" placeholder="Asset Description"
+                       value="{{ edit_asset[1] if edit_asset else '' }}" required>
+
+                <input type="text" name="Asset_Type" placeholder="Asset Type"
+                       value="{{ edit_asset[2] if edit_asset else '' }}" required>
+                    
+          
+                <input type="text" name="Serial_Number" placeholder="Serial Number"
+                         value="{{ edit_asset[3] if edit_asset else '' }}" required>
+
+                <input type="date" name="Purchase_Date" placeholder="Purchase Date"
+                         value="{{ edit_asset[4] if edit_asset else '' }}" required>
+
+
+                <input type="text" name="Asset_Status" placeholder="Asset Status (Available , Assigned or Maintenance)"
+                         value="{{ edit_asset[5] if edit_asset else '' }}" required>
+
+
+                <button type="submit" class="btn-primary">
+                    {{ 'Update Assets' if edit_asset else 'Create Assets' }}
+                </button>
+                
+                {% if edit_asset %}
+                    <a href="{{ url_for('assets') }}" class="btn-secondary">Cancel</a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+
+</body>
+<h3> <a href="{{ url_for('dashboard') }}" class="dashbtn">Back to Dashboard</a></H3>
+ 
+
+</html>
