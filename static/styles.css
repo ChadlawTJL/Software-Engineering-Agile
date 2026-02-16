@@ -1,0 +1,133 @@
+
+
+/* Setting the background image to semi transparrent */
+body {background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.35),
+            rgba(0, 0, 0, 0.35)
+        ), url("images/cl_background.jpg");
+  background-size: cover;
+  background-position: centre;
+  background-repeat: no-repeat;
+  margin: 0;
+    display: flex;
+    /* Stack the H1 and the Form */
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: white
+}
+
+/*  Style the form box */
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    display: flex;
+    /* Stack Username/Password vertically */
+    flex-direction: column; 
+    width: 300px;
+}
+
+
+/* Space out the inputs and labels */
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/*  Style the login button */
+.login-btn {
+    padding: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* changes the button colour when you hover over it*/
+.login-btn:hover {
+    background-color: blue
+}
+
+.dashbtn {
+    background-color:rgb(14, 20, 105);
+    border: 1px solid blue;
+    color: yellow;
+    font-size:  90px;
+    padding: 5px 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.dashbtn:hover{
+    background-color: blue;
+}
+
+.edit-btn{padding: 10px;
+border-radius: 4px;
+color: rgb(0, 0, 5);
+
+}
+
+.edit-btn:hover{
+    background-color: rgb(154, 212, 247);
+}
+
+.Delete-btn{padding: 10px;
+border-radius: 4px;
+color: red;
+
+}
+
+.Delete-btn:hover{
+    background-color: black;
+}
+
+
+/* Centring text, adding colour and size to the title */
+h1 {text-align: center;
+  color: yellow;
+  font-weight: bold;
+  font-size: 80px;
+  font-family: serif;
+  padding:auto;
+}
+
+h2{text-align: center;
+  color: rgb(255, 0, 47);
+  font-size: 40px;
+  padding: auto;
+  border: 1px black;
+  background-color: white;
+}
+
+h3{
+  color: rgb(255, 0, 47);
+  font-size: 45px;
+}
+
+/* Table, creating boarders */
+table, th, td{background-color: #ccc;
+border: 1px solid;}
+
+p {
+  text-align: center;
+  color: tomato;
+}
+div {
+  text-align: center;}
+
+
+  

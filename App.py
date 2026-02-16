@@ -1,7 +1,7 @@
 # Importing Flask framework and rendering templates
 from flask import Flask, render_template, request, redirect, url_for, session
 # Importing variables from config files
-from Config import connection, cur
+from config import connection, cur
 import sqlite3
 import os
 
