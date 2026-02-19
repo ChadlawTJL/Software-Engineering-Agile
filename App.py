@@ -1,5 +1,5 @@
 # Importing Flask framework and rendering templates
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 # Importing variables from config files
 from config import connection, cur
 import sqlite3
@@ -109,11 +109,14 @@ def save_asset():
     Purchase_Date = request.form['Purchase_Date']
     Asset_Status = request.form['Asset_Status']
 
+    # New validation: Check the hidden flag to see if we are editing
+    is_editing = request.form.get('is_editing') == 'true'
+
     # Check if this asset is already exists in the DB
     cur.execute("SELECT AssetID FROM Assets WHERE AssetID = ?", (assetid,))
     exists = cur.fetchone()
 
-    if exists:
+    if is_editing:
         # UPDATE existing record
         cur.execute("""
             UPDATE Assets 
@@ -122,6 +125,11 @@ def save_asset():
         """, (Asset_description, Asset_Type, Serial_Number, Purchase_Date, Asset_Status, assetid))
     else:
         # INSERT new record 
+        # Logic to ensure you don't overwrite someone ID or use an ID already in use
+        if exists:
+            flash(f"Error: Asset ID {assetid} is already in use!")
+            return redirect(url_for('assets'))
+
         cur.execute("""
             INSERT INTO Assets (AssetID, Asset_Description, Asset_Type, Serial_Number, Purchased_Date, Asset_Status)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -165,9 +173,10 @@ def delete_user(user_id):
     return redirect(url_for('users'))
 
 
+
 @app.route('/save_user', methods=['POST'])
-# Pulling data from the users form
 def save_user():
+    # Pulling data from the users form
     userid = request.form.get('user_id')
     full_name = request.form['full_name']
     email = request.form['email']
@@ -175,18 +184,28 @@ def save_user():
     password = request.form['password']
     is_active = 1 if request.form.get('is_active') else 0
 
-    # Check if this user already exists in the DB
+    # Check the hidden flag from the HTML to see if we are editing or creating
+    is_editing = request.form.get('is_editing') == 'true'
+
+    # Check if this UserID already exists in the DB
     cur.execute("SELECT UserID FROM Users WHERE UserID = ?", (userid,))
     exists = cur.fetchone()
 
-    if exists:
-        # UPDATE existing record
+    if is_editing:
+        # UPDATE existing record 
         cur.execute("""
             UPDATE Users 
             SET Full_Name = ?, Email_Address = ?, Sys_Role = ?, Is_Active = ?, Passwords = ?
             WHERE UserID = ?
         """, (full_name, email, sys_role, is_active, password, userid))
+    
     else:
+        # CREATE new record path
+        if exists:
+            # This is where we stop the overwrite and alert the user
+            flash(f"Error: User ID {userid} is already in use. Please choose another.")
+            return redirect(url_for('users'))
+
         # INSERT new record (time stamp is needed or an error is returned)
         cur.execute("""
             INSERT INTO Users (UserID, Full_Name, Email_Address, Sys_Role, Is_Active, Passwords, Created_At)
@@ -201,7 +220,7 @@ def save_user():
 if __name__ == '__main__': 
   
    #  debug app
-   #  app.run(debug=True)
+    #app.run(debug=True)
 
      # Use environment variable for port to satisfy Render's requirements
     port = int(os.environ.get("PORT", 5000))

@@ -7,6 +7,14 @@
 <body>
 
     <h1>Assets</h1>
+    <!--- Validation Message-->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert-error" style="color: red; font-weight: bold;">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     <!-- Asset table pulled from app.py -->
     <table>
         <thead>
@@ -57,6 +65,8 @@
         <h3>{{ 'Edit Asset' if edit_asset else 'Create New asset' }}</h3>
 
         <form method="post" action="{{ url_for('save_asset') }}">
+            <!--Setting if the is_editing is true-->
+            <input type="hidden" name="is_editing" value="{{ 'true' if edit_asset else 'false' }}">
             <!--If edit we want the ID to be hidden but to pass through the row ID... for  create user, an ID is needed so the field shows-->
           {% if edit_asset %}
           <input type="hidden" name="asset_id" placeholder="Asset ID (do not leave blank)" value="{{ edit_asset[0] }}">

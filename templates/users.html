@@ -7,6 +7,15 @@
 <body>
 
     <h1>Users</h1>
+    <!---Validation messages-->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert-error" style="color: red; margin-bottom: 50px;">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
     <!-- Users table pulled from app.py -->
     <table>
         <thead>
@@ -53,11 +62,14 @@
         <h3>{{ 'Edit User' if edit_user else 'Create New User' }}</h3>
 
         <form method="post" action="{{ url_for('save_user') }}">
-            <!--If edit we want the ID to be hidden but to pass through the row ID... for  create user, an ID is needed so the field shows-->
-            {% if edit_asset %}
-            <input type="hidden" name="user_id" placeholder="User ID (do not leave blank)" value="{{ edit_user[0]}}">
+            <!--If edit we want the ID to be hidden but to pass through the row ID... for  create user, an ID is needed so the field shows, also is_editing is validation-->
+            
+            <input type="hidden" name="is_editing" value="{{ 'true' if edit_user else 'false' }}">
+
+            {% if edit_user %}
+                <input type="text" name="user_id" value="{{ edit_user[0] }}" readonly>
             {% else %}
-            <input type="text" name="user_id" placeholder="User ID (do not leave blank)" value="{{ edit_user[0]}}">
+                <input type="text" name="user_id" placeholder="User ID (do not leave blank)" required>
             {% endif %}
             
             <div class="input-group">
